@@ -8,7 +8,7 @@
 /**
  * @brief SaveMaxT
  * @details 
- *         See PermTesting.h for information
+ *         See PermTestingArmadilloUtils.h for information
  */
 void SaveMaxT(arma::mat maxT, int nPermutations, bool matrix)
 {
@@ -30,9 +30,30 @@ void SaveMaxT(arma::mat maxT, int nPermutations, bool matrix)
 }
 
 /**
+ * @brief ArmaToArray
+ * @details 
+ *         See PermTestingArmadilloUtils.h for information
+ */
+float* ArmaToArray(arma::mat matrix)
+{
+    int r = matrix.n_rows;
+    int c = matrix.n_cols;
+    float *arr = new float[r * c];
+
+    for(int i = 0;i < N;i++)
+    {
+        for(int j = 0; j < V;j++)
+        {
+            arr[i*c + j] = data(i,j);
+        }
+    }     
+    return arr;
+}
+
+/**
  * @brief GetIndexMatrix
  * @details 
- *         See PermTesting.h for information
+ *         See PermTestingArmadilloUtils.h for information
  */
 arma::mat GetIndexMatrix(int nPermutations, int N)
 {
@@ -55,7 +76,7 @@ arma::mat GetIndexMatrix(int nPermutations, int N)
 /**
  * @brief LoadIndexMatrix
  * @details 
- *         See PermTesting.h for information
+ *         See PermTestingArmadilloUtils.h for information
  */
 arma::mat LoadIndexMatrix(std::string path, bool isArma)
 {
@@ -74,7 +95,7 @@ arma::mat LoadIndexMatrix(std::string path, bool isArma)
 /**
  * @brief GetPermutationMatrices
  * @details 
- *         See PermTesting.h for information
+ *         See PermTestingArmadilloUtils.h for information
  */
 arma::cube GetPermutationMatrices(int nPermutations, int N, int nGroup1)
 {
@@ -105,7 +126,7 @@ arma::cube GetPermutationMatrices(int nPermutations, int N, int nGroup1)
 /**
  * @brief LoadPermutationMatrices
  * @details 
- *         See PermTesting.h for information
+ *         See PermTestingArmadilloUtils.h for information
  */
 arma::cube LoadPermutationMatrices(std::string path1, std::string path2, bool isArma)
 {

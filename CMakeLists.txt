@@ -1,22 +1,43 @@
 cmake_minimum_required (VERSION 2.8)
 project(PermTestingToolbox CXX)
 
+set(GPU_ENABLED 0)
 
 # Armadillo needs to be compiled for C++11 in order to use large matrices
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 find_package(Armadillo REQUIRED)
-
+find_package(ArrayFire)
 
 include_directories(${ARMADILLO_INCLUDE_DIRS})
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
+if(GPU_ENABLED)
+    include_directories(${ArrayFire_INCLUDE_DIRS})
+endif()
+
+if(${Armadillo_FOUND})
+    message("Armadillo was found!")
+endif()
+if(${ArrayFire_FOUND})
+    message("ArrayFire was found!")
+    if(${ArrayFire_CPU_FOUND})
+        message("ArrayFire CPU libraries were found!")
+    endif()
+    if(${ArrayFire_OpenCL_FOUND})
+        message("ArrayFire OpenCL libraries were found!")
+    endif()
+endif()
 
 add_subdirectory(Utils)
 add_subdirectory(ArmadilloUtils)
 
-set(permTesting_source_files
-    PermTestingCPU.cpp
-    )
-add_library(permTesting ${permTesting_source_files})
+if(GPU_ENABLED)
+    set(permTesting_source_files PermTestingCPU.cpp PermTestingGPU.cpp)
+    add_library(permTesting ${permTesting_source_files})
+    target_link_libraries(permTesting ${ArrayFire_LIBRARIES})
+else()
+    set(permTesting_source_files PermTestingCPU.cpp)
+    add_library(permTesting ${permTesting_source_files})
+endif()
 target_link_libraries(permTesting ${ARMADILLO_LIBRARIES})
 target_link_libraries(permTesting utils)
 target_link_libraries(permTesting armadilloUtils)
@@ -31,10 +52,15 @@ target_link_libraries(permTesting armadilloUtils)
 #    endif()
 #endif()
 
-set(PermTestingMatrix_source_files PermTestingMatrix.cpp)
-add_executable(PermTestingMatrix ${PermTestingMatrix_source_files})
-target_link_libraries(PermTestingMatrix ${ARMADILLO_LIBRARIES})
-target_link_libraries(PermTestingMatrix permTesting)
+add_executable(demo_PermTestingMatrixCPU demo_PermTestingMatrixCPU.cpp)
+target_link_libraries(demo_PermTestingMatrixCPU ${ARMADILLO_LIBRARIES})
+target_link_libraries(demo_PermTestingMatrixCPU permTesting)
+
+if(GPU_ENABLED)
+    add_executable(demo_PermTestingGPU demo_PermTestingGPU.cpp)
+    target_link_libraries(demo_PermTestingGPU ${ARMADILLO_LIBRARIES})
+    target_link_libraries(demo_PermTestingGPU permTesting)
+endif()
 
 
 

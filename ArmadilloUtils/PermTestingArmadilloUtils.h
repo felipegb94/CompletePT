@@ -18,6 +18,14 @@
 void SaveMaxT(arma::mat maxT, int nPermutations, bool matrix);
 
 /**
+ * @brief ArmaToArray
+ * @details 
+ *         Convert an armadillo matrix into a float array.
+ * return array
+ */
+float* ArmaToArray(arma::mat matrix);
+
+/**
  * @brief GetIndexMatrix
  * @details 
  *         Generate a matrix where each row is a permutation of the list [0,1,2...N].
