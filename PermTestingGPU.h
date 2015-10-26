@@ -17,5 +17,4 @@
  * @param nGroup1 = Total number of subjects in group1. N-nGroup1 = nGroup2.
  * @return maxT numPermutationsx1 vector: Maximum null distribution.
  */
-float* PermTestingGPU(float* data, float* permutationMatrix1Host, float* permutationMatrix2Host,
-                   int N, int V, int nPermutations, int nGroup1, double maxMemory)
+float* PermTestingGPU(float* data, int nPermutations, int N, int V, int nGroup1, double maxMemory);

@@ -40,11 +40,11 @@ float* ArmaToArray(arma::mat matrix)
     int c = matrix.n_cols;
     float *arr = new float[r * c];
 
-    for(int i = 0;i < N;i++)
+    for(int i = 0;i < r;i++)
     {
-        for(int j = 0; j < V;j++)
+        for(int j = 0; j < c;j++)
         {
-            arr[i*c + j] = data(i,j);
+            arr[i*c + j] = matrix(i,j);
         }
     }     
     return arr;

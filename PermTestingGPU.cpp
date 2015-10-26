@@ -7,8 +7,7 @@
 #include "Utils/PermTestingUtils.h"
 #include "ArmadilloUtils/PermTestingArmadilloUtils.h"
 
-float* PermTestingGPU(float* dataHost, float* permutationMatrix1Host, float* permutationMatrix2Host,
-                      int N, int V, int nPermutations, int nGroup1, double maxMemory)
+float* PermTestingGPU(float* dataHost, int nPermutations, int N, int V, int nGroup1, double maxMemory)
 {
     std::string path1 = "/Users/felipegb94/PermTest/data/raw_adrc/permutationMatrix1.arma";
     std::string path2 = "/Users/felipegb94/PermTest/data/raw_adrc/permutationMatrix2.arma";
@@ -16,17 +15,21 @@ float* PermTestingGPU(float* dataHost, float* permutationMatrix1Host, float* per
     std::cout << "Environment Information: " << std::endl;
     af::info();
 
-    arma::mat permutationMatrices = GetPermutationMatrices(nPermutations, N, nGroup1);
-    arma::mat permutationMatrix1Host = permutationMatrices.slice(0);
-    arma::mat permutationMatrix2Host = permutationMatrices.slice(1);
+    int nGroup2 = N - nGroup1;
+    arma::cube permutationMatrices = GetPermutationMatrices(nPermutations, N, nGroup1);
+    arma::mat permutationMatrix1ArmaHost = permutationMatrices.slice(0);
+    arma::mat permutationMatrix2ArmaHost = permutationMatrices.slice(1);
+    float* permutationMatrix1Host = ArmaToArray(permutationMatrix1ArmaHost);
+    float* permutationMatrix2Host = ArmaToArray(permutationMatrix2ArmaHost);
+    int intervalSize = GetIntervalDimension(V, maxMemory);
+    intervalSize = 10;
+    int numPasses = nPermutations/intervalSize;
 
     af::array dataDevice(V,N,dataHost);
     af::array dataSquaredDevice = dataDevice * dataDevice;
     af::array permutationMatrix1Device(N,nPermutations,permutationMatrix1Host);
     af::array permutationMatrix2Device(N,nPermutations,permutationMatrix2Host);
 
-    int intervalSize = GetIntervalDimension(V, maxMemory);
-    int numPasses = nPermutations/intervalSize;
 
     std::cout << "Number of subjects (rows in data matrix): " << N << std::endl;
     std::cout << "Number of voxels per subject (cols in data matrix and cols in indexMatrix): ";
@@ -53,13 +56,13 @@ float* PermTestingGPU(float* dataHost, float* permutationMatrix1Host, float* per
         start = intervalSize * i;
         end = (intervalSize * i) + intervalSize - 1;
         std::cout << "Curr Pass = " << i << std::endl;
-        g1Mean = af::matmul(dataDevice, permutationMatrix1Device(af::span, af::seq(start, end))) / N_g1 ;
-        g2Mean = af::matmul(dataDevice, permutationMatrix2Device(af::span, af::seq(start, end))) / N_g2;
-        g1Var = (af::matmul(dataSquaredDevice, permutationMatrix1Device(af::span, af::seq(start, end))) / (N_g1)) - (g1Mean*g1Mean);
+        g1Mean = af::matmul(dataDevice, permutationMatrix1Device(af::span, af::seq(start, end))) / nGroup1 ;
+        g2Mean = af::matmul(dataDevice, permutationMatrix2Device(af::span, af::seq(start, end))) / nGroup2;
+        g1Var = (af::matmul(dataSquaredDevice, permutationMatrix1Device(af::span, af::seq(start, end))) / (nGroup1)) - (g1Mean*g1Mean);
 
-        g2Var = (af::matmul(dataSquaredDevice, permutationMatrix2Device(af::span, af::seq(start, end))) / (N_g2)) - (g2Mean*g2Mean); 
+        g2Var = (af::matmul(dataSquaredDevice, permutationMatrix2Device(af::span, af::seq(start, end))) / (nGroup2)) - (g2Mean*g2Mean); 
 
-        tStatMatrix = (g1Mean - g2Mean) / (af::sqrt((g1Var/(N_g1-1)) + (g2Var/(N_g2-1))));
+        tStatMatrix = (g1Mean - g2Mean) / (af::sqrt((g1Var/(nGroup1-1)) + (g2Var/(nGroup2-1))));
 
         MaxTDevice(af::seq(start,end)) = af::max(tStatMatrix,0);
 

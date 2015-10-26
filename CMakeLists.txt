@@ -1,7 +1,8 @@
 cmake_minimum_required (VERSION 2.8)
 project(PermTestingToolbox CXX)
 
-set(GPU_ENABLED 0)
+set(GPU_ENABLED 1)
+set(OPENMP_ENABLED 0)
 
 # Armadillo needs to be compiled for C++11 in order to use large matrices
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
