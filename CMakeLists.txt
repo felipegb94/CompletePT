@@ -5,13 +5,23 @@ project(PermTestingToolbox CXX)
 # Armadillo needs to be compiled for C++11 in order to use large matrices
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 find_package(Armadillo REQUIRED)
+
+
 include_directories(${ARMADILLO_INCLUDE_DIRS})
+include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 
 add_subdirectory(Utils)
 add_subdirectory(ArmadilloUtils)
-add_subdirectory(PermTestingCPU)
 
-set(PermTestingMatrix_source_files PermTestingMatrix.cpp)
+set(permTesting_source_files
+    PermTestingCPU.cpp
+    )
+add_library(permTesting ${permTesting_source_files})
+target_link_libraries(permTesting ${ARMADILLO_LIBRARIES})
+target_link_libraries(permTesting utils)
+target_link_libraries(permTesting armadilloUtils)
+
+
 # Finda CUDA and OPENMP
 #if(OPENMP_ENABLED)
 #    find_package("OpenMP")
@@ -21,12 +31,10 @@ set(PermTestingMatrix_source_files PermTestingMatrix.cpp)
 #    endif()
 #endif()
 
+set(PermTestingMatrix_source_files PermTestingMatrix.cpp)
 add_executable(PermTestingMatrix ${PermTestingMatrix_source_files})
 target_link_libraries(PermTestingMatrix ${ARMADILLO_LIBRARIES})
-
-
-
-
+target_link_libraries(PermTestingMatrix permTesting)
 
 
 

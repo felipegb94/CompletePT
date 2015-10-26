@@ -3,6 +3,8 @@
 #include "vector"
 
 #include "armadillo"
+#include "Utils/PermTestingUtils.h"
+#include "ArmadilloUtils/PermTestingArmadilloUtils.h"
 
 #if OPENMP_ENABLED
     #include <omp.h>

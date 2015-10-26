@@ -6,8 +6,9 @@ include_directories(${ARMADILLO_INCLUDE_DIRS})
 
 set(armadilloUtils_source_files
     PermTestingArmadilloUtils.cpp
-    PermTestingArmadilloUtils.h
     )
 
 add_library(armadilloUtils ${armadilloUtils_source_files})
 target_link_libraries(armadilloUtils ${ARMADILLO_LIBRARIES})
+
+

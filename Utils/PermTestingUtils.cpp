@@ -1,5 +1,5 @@
 #include <math.h>
-
+#include <iostream>
 /**
  * @brief GetIntervalDimension
  * @details 
