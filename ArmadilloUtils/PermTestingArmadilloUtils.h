@@ -1,3 +1,4 @@
+#include <string>
 #include "armadillo"
 
 /**
@@ -15,7 +16,7 @@
  * @param nPermutations - Used for the filename
  * @param matrix - Where did this maxT came from
  */
-void SaveMaxT(arma::mat maxT, int nPermutations, bool matrix);
+void SaveMaxT(arma::mat maxT, int nPermutations, std::string prefix);
 
 /**
  * @brief ArmaToArray

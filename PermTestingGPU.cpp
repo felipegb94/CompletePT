@@ -70,17 +70,12 @@ float* PermTestingGPU(float* dataHost, int nPermutations, int N, int V, int nGro
     
     float * MaxTHost = MaxTDevice.host<float>();
     arma::mat MaxT(1,nPermutations);
-
     for(int i = 0;i < nPermutations;i++)
     {
         MaxT(i) = MaxTHost[i];
     }
-    MaxT.save("MaxT_ArrayFire_10000.arma");
-    MaxT.save("MaxT_ArrayFire_10000.ascii", arma::raw_ascii);
-
-
-
+    std::string prefix = "MaxT_GPU";
+    SaveMaxT(MaxT, nPermutations, prefix);
 
     return MaxTHost;
-
 }

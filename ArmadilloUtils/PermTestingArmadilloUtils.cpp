@@ -10,21 +10,14 @@
  * @details 
  *         See PermTestingArmadilloUtils.h for information
  */
-void SaveMaxT(arma::mat maxT, int nPermutations, bool matrix)
+void SaveMaxT(arma::mat maxT, int nPermutations, std::string prefix)
 {
     std::stringstream armaFileName;
     std::stringstream asciiFileName;
-    if(matrix)
-    {
-        armaFileName << "MaxT_Matrix_" << nPermutations << ".arma";
-        asciiFileName << "MaxT_Matrix_" << nPermutations << ".ascii";
-    }
-    else
-    {
-        armaFileName << "MaxT_Iterative_" << nPermutations << ".arma";
-        asciiFileName << "MaxT_Iterative_" << nPermutations << ".ascii";
-    }
 
+    armaFileName << prefix << "_" << nPermutations << ".arma";
+    asciiFileName << prefix << "_" << nPermutations << ".ascii";
+    
     maxT.save(armaFileName.str());
     maxT.save(asciiFileName.str(), arma::raw_ascii);
 }

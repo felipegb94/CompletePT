@@ -42,8 +42,6 @@ arma::mat PermTestingIterative(arma::mat data,
                                int nGroup1)
 {
     std::string path = "/Users/felipegb94/PermTest/data/raw_adrc/indexMatrix.arma";
-    bool isArma = true;
-    bool isPermTestingMatrix = false;
     int N; // Total number of subjects
     int nGroup2; // Total number of subjects in group 2
     int V; // Total number of statistics/voxels to be tested
@@ -85,8 +83,8 @@ arma::mat PermTestingIterative(arma::mat data,
         tStat = TwoSampleTTest(group1, group2);
         maxT(i, arma::span::all) = arma::max(tStat,1);
     }
-
-    SaveMaxT(maxT, nPermutations, isPermTestingMatrix);
+    std::string prefix = "MaxT_IterativeCPU";
+    SaveMaxT(maxT, nPermutations, prefix);
 
 
     return maxT;
@@ -104,8 +102,6 @@ arma::mat PermTestingMatrix(arma::mat data,
 {
     std::string path1 = "/Users/felipegb94/PermTest/data/raw_adrc/permutationMatrix1.arma";
     std::string path2 = "/Users/felipegb94/PermTest/data/raw_adrc/permutationMatrix2.arma";
-    bool isArma = true;
-    bool isPermTestingMatrix = true;
     std::cout << "Starting PermTestingMatrix..." << std::endl;
     int N; // Total number of subjects
     int nGroup2; // Total number of subjects in group 2
@@ -177,8 +173,8 @@ arma::mat PermTestingMatrix(arma::mat data,
         tStatMatrix = (g1Mean - g2Mean) / (sqrt((g1Var/(nGroup1-1)) + (g2Var/(nGroup2-1))));
         maxT(arma::span(start,end),arma::span::all) = arma::max(tStatMatrix,1);
     }
-
-    SaveMaxT(maxT, nPermutations, isPermTestingMatrix);
+    std::string prefix = "MaxT_CPU";
+    SaveMaxT(maxT, nPermutations, prefix);
 
     return maxT;
 }
