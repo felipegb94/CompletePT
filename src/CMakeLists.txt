@@ -9,8 +9,9 @@ include_directories(${ARMADILLO_INCLUDE_DIRS})
 
 add_subdirectory(Utils)
 add_subdirectory(ArmadilloUtils)
-add_subdirectory(cpu)
+add_subdirectory(PermTestingCPU)
 
+set(PermTestingMatrix_source_files PermTestingMatrix.cpp)
 # Finda CUDA and OPENMP
 #if(OPENMP_ENABLED)
 #    find_package("OpenMP")
@@ -20,11 +21,7 @@ add_subdirectory(cpu)
 #    endif()
 #endif()
 
-
-# add_executable(PermTestingIterative PermTestingIterative.cpp cpu/PermTesting.cpp)
-# target_link_libraries(PermTestingIterative ${ARMADILLO_LIBRARIES})
-
-add_executable(PermTestingMatrix PermTestingMatrix.cpp cpu/PermTesting.cpp)
+add_executable(PermTestingMatrix ${PermTestingMatrix_source_files})
 target_link_libraries(PermTestingMatrix ${ARMADILLO_LIBRARIES})
 
 
