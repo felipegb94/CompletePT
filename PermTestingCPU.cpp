@@ -106,10 +106,12 @@ arma::mat PermTestingMatrix(arma::mat data,
     int N; // Total number of subjects
     int nGroup2; // Total number of subjects in group 2
     int V; // Total number of statistics/voxels to be tested
-    int intervalSize; // Number of permutations done at once
-    int numPasses; // nPermutations/intervalSize
+    int nPermutationsPerIteration; // Number of permutations done at once
+    int numIterations; // nPermutations/nPermutationsPerIteration
+    int lastIteration;
     int start, end; // Start and end of current interval
-    arma::cube permutationMatrices(nPermutations, N, 2);
+
+    arma::cube permutationMatrices;
     arma::mat permutationMatrix1;
     arma::mat permutationMatrix2; 
     arma::mat maxT; // Maximum null distribution
@@ -128,13 +130,14 @@ arma::mat PermTestingMatrix(arma::mat data,
     permutationMatrix1 = permutationMatrices.slice(0);
     permutationMatrix2 = permutationMatrices.slice(1);
     dataSquared = data % data;
-    intervalSize = GetIntervalDimension(V, maxMemory);
-    numPasses = nPermutations / intervalSize;
-    g1Mean = arma::zeros(intervalSize, N);
-    g2Mean = arma::zeros(intervalSize, N);
-    g1Var = arma::zeros(intervalSize, N);
-    g2Var = arma::zeros(intervalSize, N);
-    tStatMatrix = arma::zeros(intervalSize, N);
+    nPermutationsPerIteration = GetIntervalDimension(V, maxMemory);
+    lastIteration = nPermutations % nPermutationsPerIteration;
+    numIterations = floor(nPermutations/nPermutationsPerIteration);
+    g1Mean = arma::zeros(nPermutationsPerIteration, N);
+    g2Mean = arma::zeros(nPermutationsPerIteration, N);
+    g1Var = arma::zeros(nPermutationsPerIteration, N);
+    g2Var = arma::zeros(nPermutationsPerIteration, N);
+    tStatMatrix = arma::zeros(nPermutationsPerIteration, N);
     maxT = arma::zeros(nPermutations,1);
 
 
@@ -146,24 +149,20 @@ arma::mat PermTestingMatrix(arma::mat data,
     std::cout << "Size of group2 = " << nGroup2 << std::endl;
     std::cout << "Rows in PermutationMatrices = " << permutationMatrices.n_rows << std::endl;
     std::cout << "Cols in PermutationMatrices = " << permutationMatrices.n_cols << std::endl;
-    std::cout << "Interval Size = " << intervalSize << std::endl;
-    std::cout << "Number of Passes = " << numPasses << std::endl;
+    std::cout << "Interval Size = " << nPermutationsPerIteration << std::endl;
+    std::cout << "Number of Passes = " << numIterations << std::endl;
 
-    if((nPermutations % intervalSize) != 0)
-    {
-        fprintf(stderr, "Error: Wrong intervalSize \n");
-        return maxT;
-    }
 
+    int i = 0;
     /* Permutation loop */
     #if OPENMP_ENABLED
         #pragma omp parallel for
     #endif
-    for(int i = 0;i < numPasses;i++)
+    for(i = 0;i < numIterations;i++)
     {
-        std::cout << "Curr Pass = " << i << " out of " << numPasses << std::endl;
-        start = intervalSize * i;
-        end = (intervalSize * i) + intervalSize - 1;
+        start = nPermutationsPerIteration * i;
+        end = (nPermutationsPerIteration * i) + nPermutationsPerIteration - 1;
+        printf("Iteration %d , start %d, end %d of %d \n", i, start, end, nPermutations-1);
 
         g1Mean = (permutationMatrix1(arma::span(start,end), arma::span::all) * data) / nGroup1;
         g2Mean = (permutationMatrix2(arma::span(start,end), arma::span::all) * data) / nGroup2;
@@ -172,6 +171,20 @@ arma::mat PermTestingMatrix(arma::mat data,
 
         tStatMatrix = (g1Mean - g2Mean) / (sqrt((g1Var/(nGroup1-1)) + (g2Var/(nGroup2-1))));
         maxT(arma::span(start,end),arma::span::all) = arma::max(tStatMatrix,1);
+    }
+    if(lastIteration != 0)
+    {
+        start = nPermutationsPerIteration * i;
+        end = nPermutations - 1;
+        printf("Iteration %d , start %d, end %d of %d \n", i, start, end, nPermutations-1);
+
+        g1Mean = (permutationMatrix1(arma::span(start,end), arma::span::all) * data) / nGroup1;
+        g2Mean = (permutationMatrix2(arma::span(start,end), arma::span::all) * data) / nGroup2;
+        g1Var = ((permutationMatrix1(arma::span(start,end), arma::span::all) * dataSquared) / (nGroup1)) - (g1Mean % g1Mean); 
+        g2Var = ((permutationMatrix2(arma::span(start,end), arma::span::all) * dataSquared) / (nGroup2)) - (g2Mean % g2Mean); 
+
+        tStatMatrix = (g1Mean - g2Mean) / (sqrt((g1Var/(nGroup1-1)) + (g2Var/(nGroup2-1))));
+        maxT(arma::span(start,end),arma::span::all) = arma::max(tStatMatrix,1);   
     }
     std::string prefix = "MaxT_CPU";
     SaveMaxT(maxT, nPermutations, prefix);

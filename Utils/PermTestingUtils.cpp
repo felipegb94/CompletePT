@@ -8,12 +8,9 @@
 int GetIntervalDimension(int nVoxels, double maxMemoryPerInterval)
 {
     double totalMemoryPerCol = (double)(nVoxels * sizeof(double));
-    double colMemMaxMemRatio = totalMemoryPerCol/maxMemoryPerInterval;
+    double numPermutationsPerInterval = maxMemoryPerInterval/totalMemoryPerCol;
     /* Estimate to the nearest hundredth */
-    double numPermutationsPerInterval = 100 * floor((1/(100*colMemMaxMemRatio)));
-    if((numPermutationsPerInterval*nVoxels*sizeof(double)) > maxMemoryPerInterval)
-    {
-        std::cout << "Too big of an interval!!!!!!!!!!!" << std::endl;
-    }
-    return numPermutationsPerInterval;
+    int intervalLength = floor(numPermutationsPerInterval);
+
+    return intervalLength;
 }
