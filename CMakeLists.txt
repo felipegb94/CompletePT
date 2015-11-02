@@ -32,16 +32,16 @@ add_subdirectory(Utils)
 add_subdirectory(ArmadilloUtils)
 
 if(GPU_ENABLED)
-    set(permTesting_source_files PermTestingCPU.cpp PermTestingGPU.cpp)
-    add_library(permTesting ${permTesting_source_files})
-    target_link_libraries(permTesting ${ArrayFire_LIBRARIES})
+    set(PermTesting_source_files PermTestingCPU.cpp PermTestingGPU.cpp)
+    add_library(PermTesting ${PermTesting_source_files})
+    target_link_libraries(PermTesting ${ArrayFire_LIBRARIES})
 else()
-    set(permTesting_source_files PermTestingCPU.cpp)
-    add_library(permTesting ${permTesting_source_files})
+    set(PermTesting_source_files PermTestingCPU.cpp)
+    add_library(PermTesting ${PermTesting_source_files})
 endif()
-target_link_libraries(permTesting ${ARMADILLO_LIBRARIES})
-target_link_libraries(permTesting utils)
-target_link_libraries(permTesting armadilloUtils)
+target_link_libraries(PermTesting ${ARMADILLO_LIBRARIES})
+target_link_libraries(PermTesting utils)
+target_link_libraries(PermTesting armadilloUtils)
 
 
 # Finda CUDA and OPENMP
@@ -53,14 +53,15 @@ target_link_libraries(permTesting armadilloUtils)
 #    endif()
 #endif()
 
-add_executable(demo_PermTestingMatrixCPU demo_PermTestingMatrixCPU.cpp)
-target_link_libraries(demo_PermTestingMatrixCPU ${ARMADILLO_LIBRARIES})
-target_link_libraries(demo_PermTestingMatrixCPU permTesting)
+add_executable(demo_PermTestingCPU demo_PermTestingCPU.cpp)
+target_link_libraries(demo_PermTestingCPU ${ARMADILLO_LIBRARIES})
+target_link_libraries(demo_PermTestingCPU PermTesting)
+
 
 if(GPU_ENABLED)
     add_executable(demo_PermTestingGPU demo_PermTestingGPU.cpp)
     target_link_libraries(demo_PermTestingGPU ${ARMADILLO_LIBRARIES})
-    target_link_libraries(demo_PermTestingGPU permTesting)
+    target_link_libraries(demo_PermTestingGPU PermTesting)
 endif()
 
 

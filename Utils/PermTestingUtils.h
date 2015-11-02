@@ -1,3 +1,5 @@
+#ifndef PERMTESTINGUTILS_H
+#define PERMTESTINGUTILS_H
 /**
  * @brief GetIntervalDimension
  * @details 
@@ -11,3 +13,5 @@
  * maxMemoryPerInterval
  */
 int GetIntervalDimension(int nVoxels, double maxMemoryPerInterval);
+
+#endif

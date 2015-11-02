@@ -21,9 +21,10 @@ float* PermTestingGPU(float* dataHost, int nPermutations, int N, int V, int nGro
     arma::mat permutationMatrix2ArmaHost = permutationMatrices.slice(1);
     float* permutationMatrix1Host = ArmaToArray(permutationMatrix1ArmaHost);
     float* permutationMatrix2Host = ArmaToArray(permutationMatrix2ArmaHost);
-    int intervalSize = GetIntervalDimension(V, maxMemory);
-    intervalSize = 10;
-    int numPasses = nPermutations/intervalSize;
+
+    int nPermutationsPerIteration = GetIntervalDimension(V, maxMemory);
+    int lastIteration = nPermutations % nPermutationsPerIteration;
+    int numIterations = floor(nPermutations/nPermutationsPerIteration);
 
     af::array dataDevice(V,N,dataHost);
     af::array dataSquaredDevice = dataDevice * dataDevice;
@@ -39,23 +40,24 @@ float* PermTestingGPU(float* dataHost, int nPermutations, int N, int V, int nGro
     std::cout << "Size of group2 = " << nGroup2 << std::endl;
     std::cout << "Rows in PermutationMatrices = " << N << std::endl;
     std::cout << "Cols in PermutationMatrices = " << nPermutations << std::endl;
-    std::cout << "Interval Size = " << intervalSize << std::endl;
-    std::cout << "Number of Passes = " << numPasses << std::endl;
+    std::cout << "Interval Size = " << nPermutationsPerIteration << std::endl;
+    std::cout << "Number of Passes = " << numIterations << std::endl;
 
 
-    af::array g1Mean(N, intervalSize);
-    af::array g2Mean(N, intervalSize);
-    af::array g1Var(N, intervalSize);
-    af::array g2Var(N, intervalSize);
-    af::array tStatMatrix(N, intervalSize);
+    af::array g1Mean(N, nPermutationsPerIteration);
+    af::array g2Mean(N, nPermutationsPerIteration);
+    af::array g1Var(N, nPermutationsPerIteration);
+    af::array g2Var(N, nPermutationsPerIteration);
+    af::array tStatMatrix(N, nPermutationsPerIteration);
     af::array MaxTDevice(1,nPermutations);
-
+    int i = 0;
     int start, end;
-    for(int i = 0;i < numPasses;i++)
+    for(i = 0;i < numIterations;i++)
     {
-        start = intervalSize * i;
-        end = (intervalSize * i) + intervalSize - 1;
-        std::cout << "Curr Pass = " << i << std::endl;
+        start = nPermutationsPerIteration * i;
+        end = (nPermutationsPerIteration * i) + nPermutationsPerIteration - 1;
+        printf("Iteration %d , start %d, end %d of %d \n", i, start, end, nPermutations-1);
+
         g1Mean = af::matmul(dataDevice, permutationMatrix1Device(af::span, af::seq(start, end))) / nGroup1 ;
         g2Mean = af::matmul(dataDevice, permutationMatrix2Device(af::span, af::seq(start, end))) / nGroup2;
         g1Var = (af::matmul(dataSquaredDevice, permutationMatrix1Device(af::span, af::seq(start, end))) / (nGroup1)) - (g1Mean*g1Mean);
@@ -67,7 +69,23 @@ float* PermTestingGPU(float* dataHost, int nPermutations, int N, int V, int nGro
         MaxTDevice(af::seq(start,end)) = af::max(tStatMatrix,0);
 
     }
-    
+    if(lastIteration != 0)
+    {
+        start = nPermutationsPerIteration * i;
+        end = nPermutations - 1;
+        printf("Iteration %d , start %d, end %d of %d \n", i, start, end, nPermutations-1);
+        
+        g1Mean = af::matmul(dataDevice, permutationMatrix1Device(af::span, af::seq(start, end))) / nGroup1 ;
+        g2Mean = af::matmul(dataDevice, permutationMatrix2Device(af::span, af::seq(start, end))) / nGroup2;
+        g1Var = (af::matmul(dataSquaredDevice, permutationMatrix1Device(af::span, af::seq(start, end))) / (nGroup1)) - (g1Mean*g1Mean);
+
+        g2Var = (af::matmul(dataSquaredDevice, permutationMatrix2Device(af::span, af::seq(start, end))) / (nGroup2)) - (g2Mean*g2Mean); 
+
+        tStatMatrix = (g1Mean - g2Mean) / (af::sqrt((g1Var/(nGroup1-1)) + (g2Var/(nGroup2-1))));
+
+        MaxTDevice(af::seq(start,end)) = af::max(tStatMatrix,0);
+    }
+
     float * MaxTHost = MaxTDevice.host<float>();
     arma::mat MaxT(1,nPermutations);
     for(int i = 0;i < nPermutations;i++)

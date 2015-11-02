@@ -16,7 +16,7 @@ int main()
     int nGroup2 = N - nGroup1;
     int nPermutations = 10000;
     int i;
-    double maxMemory = 1e8; // Max number of bytes to use
+    double maxMemory = 5e7; // Max number of bytes to use
     std::cout << "Number of subjects (rows in data matrix): " << N << std::endl;
     std::cout << "Number of voxels per subject (cols in data matrix and cols in indexMatrix): ";
     std::cout << V << std::endl;

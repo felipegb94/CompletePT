@@ -2,14 +2,15 @@
 #define ARMA_64BIT_WORD
 #include "armadillo"
 
-#include "PermTestingCPU"
+#include "PermTestingCPU.h"
+#include "Utils/TimerCPU.h"
 
 
 int main()
 {
     std::string dataArmaPath = "/Users/felipegb94/PermTest/data/raw_adrc/adrc_raw.arma";
     int nGroup1 = 25;
-    int nPermutations = 10000;
+    int nPermutations = 100;
 
     int N;
     int V;
@@ -31,8 +32,14 @@ int main()
     std::cout << "Rows in IndexMatrix = " << indexMatrix.n_rows << std::endl;
     std::cout << "Cols in IndexMatrix = " << indexMatrix.n_cols << std::endl;
 
+    CpuTimer t;
+    t.Start();
+    t.Start_cputimer();
     arma::mat maxT = PermTestingIterative(data, nPermutations, nGroup1);
+    t.Stop();
+    t.Stop_cputimer();
 
+    t.print();
     return 0;
 }
 

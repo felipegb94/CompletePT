@@ -20,7 +20,10 @@
 
 class CpuTimer {
 public:
-    CpuTimer() : m_start(0), m_stop(0) {}
+    CpuTimer() : m_start(0), m_stop(0) 
+    {
+        name = "TimerCPU";
+    }
     CpuTimer(std::string TimerName) : m_start(0), m_stop(0) 
     {
         name = TimerName;

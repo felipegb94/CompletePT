@@ -1,3 +1,6 @@
+#ifndef PERMTESTINGARMADILLOUTILS_H
+#define PERMTESTINGARMADILLOUTILS_H
+
 #include <string>
 #include "armadillo"
 
@@ -72,3 +75,5 @@ arma::cube GetPermutationMatrices(int nPermutations, int N, int nGroup1);
  * @return indexMatrix - nPermutationsxN matrix
  */
 arma::cube LoadPermutationMatrices(std::string path1, std::string path2, bool isArma);
+
+#endif
