@@ -53,16 +53,20 @@ target_link_libraries(PermTesting armadilloUtils)
 #    endif()
 #endif()
 
-add_executable(demo_PermTestingCPU demo_PermTestingCPU.cpp)
-target_link_libraries(demo_PermTestingCPU ${ARMADILLO_LIBRARIES})
-target_link_libraries(demo_PermTestingCPU PermTesting)
 
 
-if(GPU_ENABLED)
-    add_executable(demo_PermTestingGPU demo_PermTestingGPU.cpp)
-    target_link_libraries(demo_PermTestingGPU ${ARMADILLO_LIBRARIES})
-    target_link_libraries(demo_PermTestingGPU PermTesting)
-endif()
+#add_executable(demo_PermTestingCPU demo_PermTestingCPU.cpp)
+#target_link_libraries(demo_PermTestingCPU ${ARMADILLO_LIBRARIES})
+#target_link_libraries(demo_PermTestingCPU PermTesting)
+#if(GPU_ENABLED)
+#    add_executable(demo_PermTestingGPU demo_PermTestingGPU.cpp)
+#    target_link_libraries(demo_PermTestingGPU ${ARMADILLO_LIBRARIES})
+#    target_link_libraries(demo_PermTestingGPU PermTesting)
+#endif()
+
+add_executable(demo_OneSamplePermTestingCPU demo_OneSamplePermTestingCPU.cpp)
+target_link_libraries(demo_OneSamplePermTestingCPU ${ARMADILLO_LIBRARIES})
+target_link_libraries(demo_OneSamplePermTestingCPU PermTesting)
 
 
 

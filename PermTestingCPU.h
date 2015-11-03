@@ -24,4 +24,10 @@ arma::mat PermTestingCPU(arma::mat data,
                          int nGroup1, 
                          double maxMemory);
 
+arma::mat OneSamplePermTestingCPU(arma::mat data, 
+                                  int nPermutations,
+                                  double maxMemory);
+
+arma::mat OneSampleGetPermutationMatrix(int nPermutations, int N);
+
 #endif

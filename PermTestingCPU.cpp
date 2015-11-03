@@ -113,6 +113,76 @@ arma::mat PermTestingCPU(arma::mat data,
     return maxT;
 }
 
+arma::mat OneSampleGetPermutationMatrix(int nPermutations, int N)
+{
+    std::cout << "Getting one sample permMatrix " << std::endl;
+    arma::arma_rng::set_seed_random();  // set the seed to a random value
+
+    int cutoff;
+    bool cutoffOne = false;
+    arma::mat indexList; 
+    arma::mat permutationMatrix(nPermutations, N, arma::fill::ones);
+
+    indexList = arma::linspace<arma::mat>(0, N-1, N);
+    indexList = arma::shuffle(indexList);
+    for(int i = 0;i < nPermutations;i++)
+    {
+        cutoff = indexList(0,0);
+        indexList = arma::shuffle(indexList);
+        std::cout << "cutoff = " << cutoff <<std::endl;
+        indexList.print();
+        for(int j = 0;j < cutoff;j++)
+        {
+            permutationMatrix(i, indexList(j,0)) = -1;
+        }
+        permutationMatrix(i,arma::span::all).print();
+    }
+
+    return permutationMatrix;
+}
+
+arma::mat OneSamplePermTestingCPU(arma::mat data, 
+                                  int nPermutations,
+                                  double maxMemory);
+{
+    int N; // Total number of subjects
+    int V; // Total number of statistics/voxels to be tested
+    int nPermutationsPerIteration; // Number of permutations done at once
+    int numIterations; // nPermutations/nPermutationsPerIteration
+    int lastIteration;
+    int start, end; // Start and end of current interval
+
+    arma::mat permutationMatrix;
+    arma::mat maxT; // Maximum null distribution
+    arma::mat dataSquared;
+    arma::mat gMean;
+    arma::mat gVar;
+    arma::mat tStatMatrix;
+
+    /* Set constant values and allocate memory */   
+    N = data.n_rows; 
+    V = data.n_cols;
+    permutationMatrices = OneSampleGetPermutationMatrices(nPermutations, N);
+    dataSquared = data % data;
+    nPermutationsPerIteration = GetIntervalDimension(V, maxMemory);
+    lastIteration = nPermutations % nPermutationsPerIteration;
+    numIterations = floor(nPermutations/nPermutationsPerIteration);
+    gMean = arma::zeros(nPermutationsPerIteration, N);
+    gVar = arma::zeros(nPermutationsPerIteration, N);
+    tStatMatrix = arma::zeros(nPermutationsPerIteration, N);
+    maxT = arma::zeros(nPermutations,1);
+
+    std::cout << "Number of subjects (rows in data matrix): " << N << std::endl;
+    std::cout << "Number of voxels per subject (cols in data matrix and cols in indexMatrix): ";
+    std::cout << V << std::endl;
+    std::cout << "Number of Permutations (rows in permutations matrix):" << nPermutations << std::endl;
+    std::cout << "Rows in PermutationMatrices = " << permutationMatrices.n_rows << std::endl;
+    std::cout << "Cols in PermutationMatrices = " << permutationMatrices.n_cols << std::endl;
+    std::cout << "Interval Size = " << nPermutationsPerIteration << std::endl;
+    std::cout << "Number of Passes = " << numIterations << std::endl;
+
+    return maxT;
+}
 
 
 
