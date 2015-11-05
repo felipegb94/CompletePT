@@ -86,36 +86,7 @@ arma::mat LoadIndexMatrix(std::string path, bool isArma)
     return indexMatrix;
 }
 
-/**
- * @brief GetPermutationMatrices
- * @details 
- *         See PermTestingArmadilloUtils.h for information
- */
-arma::cube GetPermutationMatrices(int nPermutations, int N, int nGroup1)
-{
-    arma::arma_rng::set_seed_random();  // set the seed to a random value
 
-    arma::cube permutationMatrices(nPermutations, N, 2, arma::fill::zeros);
-    arma::mat permutationMatrix1(nPermutations, N, arma::fill::zeros);
-    arma::mat permutationMatrix2(nPermutations, N, arma::fill::ones);
-    arma::mat indexList; 
-
-    indexList = arma::linspace<arma::mat>(0, N-1, N);
-
-    for(int i = 0;i < nPermutations;i++)
-    {   
-        indexList = arma::shuffle(indexList);
-        for(int j = 0;j < nGroup1;j++)
-        {
-            permutationMatrix1(i,indexList(j)) = 1;
-        }
-    }
-    permutationMatrix2 = permutationMatrix2 - permutationMatrix1;
-    permutationMatrices.slice(0) = permutationMatrix1;
-    permutationMatrices.slice(1) = permutationMatrix2;
-
-    return permutationMatrices;
-}
 
 /**
  * @brief LoadPermutationMatrices

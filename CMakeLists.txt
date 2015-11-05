@@ -5,7 +5,7 @@ set(GPU_ENABLED 1)
 set(OPENMP_ENABLED 0)
 
 # Armadillo needs to be compiled for C++11 in order to use large matrices
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 ")
 find_package(Armadillo REQUIRED)
 find_package(ArrayFire)
 
@@ -32,11 +32,11 @@ add_subdirectory(Utils)
 add_subdirectory(ArmadilloUtils)
 
 if(GPU_ENABLED)
-    set(PermTesting_source_files PermTestingCPU.cpp PermTestingGPU.cpp)
+    set(PermTesting_source_files PermTestingShared.cpp PermTestingCPU.cpp PermTestingGPU.cpp)
     add_library(PermTesting ${PermTesting_source_files})
     target_link_libraries(PermTesting ${ArrayFire_LIBRARIES})
 else()
-    set(PermTesting_source_files PermTestingCPU.cpp)
+    set(PermTesting_source_files PermTestingShared.cpp PermTestingCPU.cpp)
     add_library(PermTesting ${PermTesting_source_files})
 endif()
 target_link_libraries(PermTesting ${ARMADILLO_LIBRARIES})
@@ -55,18 +55,18 @@ target_link_libraries(PermTesting armadilloUtils)
 
 
 
-#add_executable(demo_PermTestingCPU demo_PermTestingCPU.cpp)
-#target_link_libraries(demo_PermTestingCPU ${ARMADILLO_LIBRARIES})
-#target_link_libraries(demo_PermTestingCPU PermTesting)
-#if(GPU_ENABLED)
-#    add_executable(demo_PermTestingGPU demo_PermTestingGPU.cpp)
-#    target_link_libraries(demo_PermTestingGPU ${ARMADILLO_LIBRARIES})
-#    target_link_libraries(demo_PermTestingGPU PermTesting)
-#endif()
+add_executable(demo_TwoSamplePermTestingCPU demo_TwoSamplePermTestingCPU.cpp)
+target_link_libraries(demo_TwoSamplePermTestingCPU ${ARMADILLO_LIBRARIES})
+target_link_libraries(demo_TwoSamplePermTestingCPU PermTesting)
+if(GPU_ENABLED)
+    add_executable(demo_TwoSamplePermTestingGPU demo_TwoSamplePermTestingGPU.cpp)
+    target_link_libraries(demo_TwoSamplePermTestingGPU ${ARMADILLO_LIBRARIES})
+    target_link_libraries(demo_TwoSamplePermTestingGPU PermTesting)
+endif()
 
-add_executable(demo_OneSamplePermTestingCPU demo_OneSamplePermTestingCPU.cpp)
-target_link_libraries(demo_OneSamplePermTestingCPU ${ARMADILLO_LIBRARIES})
-target_link_libraries(demo_OneSamplePermTestingCPU PermTesting)
+#add_executable(demo_OneSamplePermTestingCPU demo_OneSamplePermTestingCPU.cpp)
+#target_link_libraries(demo_OneSamplePermTestingCPU ${ARMADILLO_LIBRARIES})
+#target_link_libraries(demo_OneSamplePermTestingCPU PermTesting)
 
 
 

@@ -5,6 +5,7 @@
 #include "armadillo"
 #include "Utils/PermTestingUtils.h"
 #include "ArmadilloUtils/PermTestingArmadilloUtils.h"
+#include "PermTestingShared.h"
 
 #if OPENMP_ENABLED
     #include <omp.h>
@@ -16,7 +17,7 @@
  * @details 
  *         See PermTesting.h for information
  */
-arma::mat PermTestingCPU(arma::mat data, 
+arma::mat TwoSamplePermTestingCPU(arma::mat data, 
                             int nPermutations,
                             int nGroup1, 
                             double maxMemory)
@@ -47,7 +48,10 @@ arma::mat PermTestingCPU(arma::mat data,
     N = data.n_rows; 
     V = data.n_cols;
     nGroup2 = N - nGroup1;
-    permutationMatrices = GetPermutationMatrices(nPermutations, N, nGroup1);
+    std::cout << "testing GetPerm " <<std::endl;
+    permutationMatrices = TwoSampleGetPermutationMatrices(nPermutations, N, nGroup1);
+    std::cout << "testing GetPerm " <<std::endl;
+
     permutationMatrix1 = permutationMatrices.slice(0);
     permutationMatrix2 = permutationMatrices.slice(1);
     dataSquared = data % data;
@@ -113,30 +117,7 @@ arma::mat PermTestingCPU(arma::mat data,
     return maxT;
 }
 
-arma::mat OneSampleGetPermutationMatrix(int nPermutations, int N)
-{
-    std::cout << "Getting one sample permMatrix " << std::endl;
-    arma::arma_rng::set_seed_random();  // set the seed to a random value
 
-    int cutoff;
-    bool cutoffOne = false;
-    arma::mat indexList; 
-    arma::mat permutationMatrix(nPermutations, N, arma::fill::ones);
-
-    indexList = arma::linspace<arma::mat>(0, N-1, N);
-    indexList = arma::shuffle(indexList);
-    for(int i = 0;i < nPermutations;i++)
-    {
-        cutoff = indexList(0,0);
-        indexList = arma::shuffle(indexList);
-        for(int j = 0;j < cutoff;j++)
-        {
-            permutationMatrix(i, indexList(j,0)) = -1;
-        }
-    }
-
-    return permutationMatrix;
-}
 
 arma::mat OneSamplePermTestingCPU(arma::mat data, 
                                   int nPermutations,

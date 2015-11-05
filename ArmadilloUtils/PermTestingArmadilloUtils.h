@@ -51,19 +51,6 @@ arma::mat GetIndexMatrix(int nPermutations, int N);
  */
 arma::mat LoadIndexMatrix(std::string path, bool isArma);
 
-/**
- * @brief GetPermutationMatrices
- * @details 
- *         Generate a matrix of 1's and 0's corresponding to group1. In each row, if an element is 
- *         a 1 it means that the row in the data matrix at that same index makes part of group1. 
- *         If it is 0 it means it belongs to group2. So each row has a different combination of 
- *         1's and 0's.
- * @param nPermutations Number of permutations
- * @param N Total number of indeces to permute
- * 
- * @return indexMatrix - nPermutationsxN matrix
- */
-arma::cube GetPermutationMatrices(int nPermutations, int N, int nGroup1);
 
 /**
  * @brief LoadPermutationMatrices

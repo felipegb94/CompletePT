@@ -4,10 +4,12 @@
 
 #include "arrayfire.h"
 #include "armadillo"
+
 #include "Utils/PermTestingUtils.h"
 #include "ArmadilloUtils/PermTestingArmadilloUtils.h"
+#include "PermTestingShared.h" /* For GetPermutationMatrices code */
 
-float* PermTestingGPU(float* dataHost, int nPermutations, int N, int V, int nGroup1, double maxMemory)
+float* TwoSamplePermTestingGPU(float* dataHost, int nPermutations, int N, int V, int nGroup1, double maxMemory)
 {
     std::string path1 = "/Users/felipegb94/PermTest/data/raw_adrc/permutationMatrix1.arma";
     std::string path2 = "/Users/felipegb94/PermTest/data/raw_adrc/permutationMatrix2.arma";
@@ -16,7 +18,7 @@ float* PermTestingGPU(float* dataHost, int nPermutations, int N, int V, int nGro
     af::info();
 
     int nGroup2 = N - nGroup1;
-    arma::cube permutationMatrices = GetPermutationMatrices(nPermutations, N, nGroup1);
+    arma::cube permutationMatrices = TwoSampleGetPermutationMatrices(nPermutations, N, nGroup1);
     arma::mat permutationMatrix1ArmaHost = permutationMatrices.slice(0);
     arma::mat permutationMatrix2ArmaHost = permutationMatrices.slice(1);
     float* permutationMatrix1Host = ArmaToArray(permutationMatrix1ArmaHost);

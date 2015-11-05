@@ -3,7 +3,7 @@
 #include "armadillo"
 
 /**
- * @brief PermTestingMatrix
+ * @brief TwoSamplePermTestingCPU
  * @details 
  *         The following method performs permutation testing to find group differences between 2 
  *         different groups using a two-sample t-test as the test statistic. It uses a different
@@ -19,15 +19,18 @@
  * @param nGroup1 = Total number of subjects in group1. N-nGroup1 = nGroup2.
  * @return maxT numPermutationsx1 vector: Maximum null distribution.
  */
-arma::mat PermTestingCPU(arma::mat data, 
+arma::mat TwoSamplePermTestingCPU(arma::mat data, 
                          int nPermutations,
                          int nGroup1, 
                          double maxMemory);
 
+/**
+ * @brief OneSamplePermTestingCPU
+ * @details 
+ */
 arma::mat OneSamplePermTestingCPU(arma::mat data, 
                                   int nPermutations,
                                   double maxMemory);
 
-arma::mat OneSampleGetPermutationMatrix(int nPermutations, int N);
 
 #endif

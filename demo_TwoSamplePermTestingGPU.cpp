@@ -5,7 +5,7 @@
 
 int main()
 {
-    std::string dataArmaPath = "/Users/felipegb94/PermTest/data/raw_adrc/adrc_raw.arma";
+    std::string dataArmaPath = "/home/felipe/PermTest/data/raw_adrc/adrc_raw.arma";
     arma::mat data;
     data.load(dataArmaPath);
     float * dataHost = ArmaToArray(data);
@@ -24,6 +24,6 @@ int main()
     std::cout << "Size of group1 = " << nGroup1 << std::endl;
     std::cout << "Size of group2 = " << nGroup2 << std::endl;
 
-    PermTestingGPU(dataHost, nPermutations, N, V, nGroup1, maxMemory);
+    TwoSamplePermTestingGPU(dataHost, nPermutations, N, V, nGroup1, maxMemory);
 
 }
