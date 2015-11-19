@@ -4,7 +4,7 @@
 /**
  * @brief GetPermutationMatrices
  * @details 
- *         See PermTestingArmadilloUtils.h for information
+ *         See PermTestingShared.h for information
  */
 arma::cube TwoSampleGetPermutationMatrices(int nPermutations, int N, int nGroup1)
 {

@@ -21,4 +21,6 @@
  */
 float* TwoSamplePermTestingGPU(float* data, int nPermutations, int N, int V, int nGroup1, double maxMemory);
 
+float* OneSamplePermTestingGPU(float* dataHost, int nPermutations, int N, int V, double maxMemory);
+
 #endif

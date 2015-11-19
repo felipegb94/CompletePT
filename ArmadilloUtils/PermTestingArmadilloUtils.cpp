@@ -86,8 +86,6 @@ arma::mat LoadIndexMatrix(std::string path, bool isArma)
     return indexMatrix;
 }
 
-
-
 /**
  * @brief LoadPermutationMatrices
  * @details 

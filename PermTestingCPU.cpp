@@ -18,9 +18,9 @@
  *         See PermTesting.h for information
  */
 arma::mat TwoSamplePermTestingCPU(arma::mat data, 
-                            int nPermutations,
-                            int nGroup1, 
-                            double maxMemory)
+                                  int nPermutations,
+                                  int nGroup1, 
+                                  double maxMemory)
 {
     std::string path1 = "/Users/felipegb94/PermTest/data/raw_adrc/permutationMatrix1.arma";
     std::string path2 = "/Users/felipegb94/PermTest/data/raw_adrc/permutationMatrix2.arma";
@@ -58,11 +58,6 @@ arma::mat TwoSamplePermTestingCPU(arma::mat data,
     nPermutationsPerIteration = GetIntervalDimension(V, maxMemory);
     lastIteration = nPermutations % nPermutationsPerIteration;
     numIterations = floor(nPermutations/nPermutationsPerIteration);
-    g1Mean = arma::zeros(nPermutationsPerIteration, N);
-    g2Mean = arma::zeros(nPermutationsPerIteration, N);
-    g1Var = arma::zeros(nPermutationsPerIteration, N);
-    g2Var = arma::zeros(nPermutationsPerIteration, N);
-    tStatMatrix = arma::zeros(nPermutationsPerIteration, N);
     maxT = arma::zeros(nPermutations,1);
 
 
@@ -123,6 +118,7 @@ arma::mat OneSamplePermTestingCPU(arma::mat data,
                                   int nPermutations,
                                   double maxMemory)
 {
+    std::string permMatrixPath = "/Users/felipegb94/PermTest/data/face/PermutationMatrix.arma";
     int N; // Total number of subjects
     int V; // Total number of statistics/voxels to be tested
     int nPermutationsPerIteration; // Number of permutations done at once
@@ -140,14 +136,12 @@ arma::mat OneSamplePermTestingCPU(arma::mat data,
     /* Set constant values and allocate memory */   
     N = data.n_rows; 
     V = data.n_cols;
+    //permutationMatrix.load(permMatrixPath);
     permutationMatrix = OneSampleGetPermutationMatrix(nPermutations, N);
     dataSquared = data % data;
     nPermutationsPerIteration = GetIntervalDimension(V, maxMemory);
     lastIteration = nPermutations % nPermutationsPerIteration;
     numIterations = floor(nPermutations/nPermutationsPerIteration);
-    gMean = arma::zeros(nPermutationsPerIteration, N);
-    gVar = arma::zeros(nPermutationsPerIteration, N);
-    tStatMatrix = arma::zeros(nPermutationsPerIteration, N);
     maxT = arma::zeros(nPermutations,1);
 
     std::cout << "Number of subjects (rows in data matrix): " << N << std::endl;
@@ -164,6 +158,8 @@ arma::mat OneSamplePermTestingCPU(arma::mat data,
 
     arma::mat varTerm1 = repmat(arma::sum(dataSquared,0), nPermutationsPerIteration,1)/N;
     arma::mat varTerm1LastItr = repmat(arma::sum(dataSquared,0), lastIteration, 1)/N;
+    std::cout << "VarTerm rows " << varTerm1LastItr.n_rows << std::endl;
+    std::cout << "VarTerm cols " << varTerm1LastItr.n_cols << std::endl;
     /* Permutation loop */
     #if OPENMP_ENABLED
         #pragma omp parallel for

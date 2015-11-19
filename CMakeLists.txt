@@ -55,18 +55,23 @@ target_link_libraries(PermTesting armadilloUtils)
 
 
 
-add_executable(demo_TwoSamplePermTestingCPU demo_TwoSamplePermTestingCPU.cpp)
-target_link_libraries(demo_TwoSamplePermTestingCPU ${ARMADILLO_LIBRARIES})
-target_link_libraries(demo_TwoSamplePermTestingCPU PermTesting)
-if(GPU_ENABLED)
-    add_executable(demo_TwoSamplePermTestingGPU demo_TwoSamplePermTestingGPU.cpp)
-    target_link_libraries(demo_TwoSamplePermTestingGPU ${ARMADILLO_LIBRARIES})
-    target_link_libraries(demo_TwoSamplePermTestingGPU PermTesting)
-endif()
+#add_executable(demo_TwoSamplePermTestingCPU demo_TwoSamplePermTestingCPU.cpp)
+#target_link_libraries(demo_TwoSamplePermTestingCPU ${ARMADILLO_LIBRARIES})
+#target_link_libraries(demo_TwoSamplePermTestingCPU PermTesting)
+#if(GPU_ENABLED)
+#    add_executable(demo_TwoSamplePermTestingGPU demo_TwoSamplePermTestingGPU.cpp)
+#    target_link_libraries(demo_TwoSamplePermTestingGPU ${ARMADILLO_LIBRARIES})
+#    target_link_libraries(demo_TwoSamplePermTestingGPU PermTesting)
+#endif()
 
-#add_executable(demo_OneSamplePermTestingCPU demo_OneSamplePermTestingCPU.cpp)
-#target_link_libraries(demo_OneSamplePermTestingCPU ${ARMADILLO_LIBRARIES})
-#target_link_libraries(demo_OneSamplePermTestingCPU PermTesting)
+add_executable(demo_OneSamplePermTestingCPU demo_OneSamplePermTestingCPU.cpp)
+target_link_libraries(demo_OneSamplePermTestingCPU ${ARMADILLO_LIBRARIES})
+target_link_libraries(demo_OneSamplePermTestingCPU PermTesting)
+if(GPU_ENABLED)
+    add_executable(demo_OneSamplePermTestingGPU demo_OneSamplePermTestingGPU.cpp)
+    target_link_libraries(demo_OneSamplePermTestingGPU ${ARMADILLO_LIBRARIES})
+    target_link_libraries(demo_OneSamplePermTestingGPU PermTesting)
+endif()
 
 
 
