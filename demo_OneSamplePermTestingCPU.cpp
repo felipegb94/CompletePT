@@ -7,7 +7,7 @@
 
 int main()
 {
-    std::string dataArmaPath = "/Users/felipegb94/PermTest/data/face/Data_face.arma";
+    std::string dataArmaPath = "/Users/felipegb94/PermTest/data/ADRC/ADRC_12_12_0.arma";
 
     int N;
     int V;
