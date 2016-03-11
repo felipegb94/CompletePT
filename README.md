@@ -1,8 +1,9 @@
 # PermTestingToolbox
 CPU and GPU implementations of Permutation Testing using the libraries Armadillo and Arrayfire. The permutation testing schemes implemented herein are based on two-sample and one-sample t-test. 
 
+## Setup 
 
-## Background
+## Background OLD
 ### General Linear Model
 GLM models observed data (dependent variable) as a linear combination
 of predictor variables (independent variables, covariates etc). `Y (observed data matrix), X (design matrix, predictor variables), b (parameter estimate vector), and e (error vector).`
