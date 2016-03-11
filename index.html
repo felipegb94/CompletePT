@@ -1,31 +1,43 @@
-<!DOCTYPE html>
-<html lang="en-us">
+<!doctype html>
+<html>
   <head>
-    <meta charset="UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
     <title>CompletePT by felipegb94</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
-    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
-    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/github-light.css">
+    <meta name="viewport" content="width=device-width">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
   </head>
   <body>
-    <section class="page-header">
-      <h1 class="project-name">CompletePT</h1>
-      <h2 class="project-tagline">CPU and GPU implementations of Permutation Testing</h2>
-      <a href="https://github.com/felipegb94/CompletePT" class="btn">View on GitHub</a>
-      <a href="https://github.com/felipegb94/CompletePT/zipball/master" class="btn">Download .zip</a>
-      <a href="https://github.com/felipegb94/CompletePT/tarball/master" class="btn">Download .tar.gz</a>
-    </section>
+    <div class="wrapper">
+      <header>
+        <h1>CompletePT</h1>
+        <p>CPU and GPU implementations of Permutation Testing</p>
 
-    <section class="main-content">
-      <h1>
+        <p class="view"><a href="https://github.com/felipegb94/CompletePT">View the Project on GitHub <small>felipegb94/CompletePT</small></a></p>
+
+
+        <ul>
+          <li><a href="https://github.com/felipegb94/CompletePT/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/felipegb94/CompletePT/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/felipegb94/CompletePT">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h1>
 <a id="permtestingtoolbox" class="anchor" href="#permtestingtoolbox" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>PermTestingToolbox</h1>
 
 <p>CPU and GPU implementations of Permutation Testing using the libraries Armadillo and Arrayfire. The permutation testing schemes implemented herein are based on two-sample and one-sample t-test. </p>
 
 <h2>
-<a id="background" class="anchor" href="#background" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Background</h2>
+<a id="setup" class="anchor" href="#setup" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Setup</h2>
+
+<h2>
+<a id="background-old" class="anchor" href="#background-old" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Background OLD</h2>
 
 <h3>
 <a id="general-linear-model" class="anchor" href="#general-linear-model" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>General Linear Model</h3>
@@ -78,7 +90,7 @@ variables (X1, X2, etc) </p></li>
 <p>In placebo-controlled clinical trials, the goal is to assess the improvements of the treatment, if any. When evaluation treatments for neurodegenerative disorders, fMRI data can be used to aid the evaluation of the treatment. Since we are trying to detect if there is any difference between the placebo and the control fMRI data a two-sample t-test would be an appropriate test.</p>
 
 <h2>
-<a id="setup" class="anchor" href="#setup" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Setup</h2>
+<a id="setup-1" class="anchor" href="#setup-1" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Setup</h2>
 
 <h3>
 <a id="osx" class="anchor" href="#osx" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>OSX</h3>
@@ -89,15 +101,13 @@ variables (X1, X2, etc) </p></li>
 <a id="ubuntu" class="anchor" href="#ubuntu" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Ubuntu</h3>
 
 <p>Download the C++ linear algebra library, Armadillo. Do NOT use <code>apt-get</code> to install Armadillo, this will install a very old version (4.2). This software has been tested against Armadillo 5.*, 6.1 and 6.2. So go to <a href="http://arma.sourceforge.net/download.html">http://arma.sourceforge.net/download.html</a> download the latest stable version and follow the <code>README.txt</code> instruction on how to install Armadillo. It is VERY important that you install all the requirements (section 3 of the <code>README.txt</code>) before you proceed to build and install Armadillo (section 4 of the <code>README.txt</code>).</p>
-
-      <footer class="site-footer">
-        <span class="site-footer-owner"><a href="https://github.com/felipegb94/CompletePT">CompletePT</a> is maintained by <a href="https://github.com/felipegb94">felipegb94</a>.</span>
-
-        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/felipegb94">felipegb94</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
       </footer>
-
-    </section>
-
-  
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+    
   </body>
 </html>
