@@ -3,7 +3,15 @@ CPU and GPU implementations of Permutation Testing using the libraries Armadillo
 
 ## Setup 
 
-## Background OLD
+### OSX
+
+Download homebrew
+
+### Ubuntu 
+
+Download the C++ linear algebra library, Armadillo. Do NOT use `apt-get` to install Armadillo, this will install a very old version (4.2). This software has been tested against Armadillo 5.*, 6.1 and 6.2. So go to http://arma.sourceforge.net/download.html download the latest stable version and follow the `README.txt` instruction on how to install Armadillo. It is VERY important that you install all the requirements (section 3 of the `README.txt`) before you proceed to build and install Armadillo (section 4 of the `README.txt`).
+
+## Background Notes
 ### General Linear Model
 GLM models observed data (dependent variable) as a linear combination
 of predictor variables (independent variables, covariates etc). `Y (observed data matrix), X (design matrix, predictor variables), b (parameter estimate vector), and e (error vector).`
@@ -46,17 +54,3 @@ Hypothesis testing is a group of techniques in Statistics that are often used in
   *5. Testing of hypothesis:* Compare result to table value.
 
 
-
-### fMRI
-In placebo-controlled clinical trials, the goal is to assess the improvements of the treatment, if any. When evaluation treatments for neurodegenerative disorders, fMRI data can be used to aid the evaluation of the treatment. Since we are trying to detect if there is any difference between the placebo and the control fMRI data a two-sample t-test would be an appropriate test.
-
-
-## Setup
-
-### OSX
-
-Download homebrew
-
-### Ubuntu 
-
-Download the C++ linear algebra library, Armadillo. Do NOT use `apt-get` to install Armadillo, this will install a very old version (4.2). This software has been tested against Armadillo 5.*, 6.1 and 6.2. So go to http://arma.sourceforge.net/download.html download the latest stable version and follow the `README.txt` instruction on how to install Armadillo. It is VERY important that you install all the requirements (section 3 of the `README.txt`) before you proceed to build and install Armadillo (section 4 of the `README.txt`).
