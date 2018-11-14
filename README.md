@@ -41,7 +41,7 @@ __2. One-Sample t-test:__ The one sample t test is an appropriate analysis when 
 __3. Two-Sample t-test:__ Used to determine if two population means are equal.
 
 ### Hypothesis Testing
-Hypothesis testing is a group of techniques in Statistics that are often used in functional magnetic resonance imaging (fMRI) data to identify areas in the brain that display statistical significant activity. So how do we classify a voxel as statistically significant?
+Hypothesis testing is a group of techniques in Statistics that are often used in medical images to identify regions that display statistical significant activity. So how do we classify a voxel as statistically significant?
 
   *1. Select univariate test-statistic:* The job of this test statistic is to act as the mapping from data to a detection threshold.
    
